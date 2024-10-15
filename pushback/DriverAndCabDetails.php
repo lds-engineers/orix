@@ -5,8 +5,15 @@ require '../db_config.php';
 require 'classes.php';
 $response = file_get_contents('php://input');
 $data = json_decode($response);
-$bookingId = $data->data->bookingId;  
-$DriverAndCabDetails = orixPushback::DriverAndCabDetails($data);
+$bookingId = $data->data->bookingId; 
+
+if(orixPushback::getAssignmentDetails($bookingId)) {
+    orixPushback::callVoidDuty($data);
+    $DriverAndCabDetails = orixPushback::driverReassign($data);
+} else {
+    $DriverAndCabDetails = orixPushback::DriverAndCabDetails($data);
+}
+
 $result = [];
 if($DriverAndCabDetails['status']) {
     /* 1. Driver Assignment*/

@@ -772,4 +772,117 @@ class orixPushback {
 			return 0;
 		}
 	}
+	public static function callVoidDuty($requestdata) {
+		global $CFG;
+		$requestDataNew = new stdClass();
+		if($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$bookingId = $requestdata->data->bookingId;
+			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number = '$bookingId'";
+			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
+				$original_param = json_decode($queryData['original_param']);
+				$requestDataNew->event_name = 'void_duty';
+				$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+				$requestDataNew->seller_code = SELLER_CODE;
+				$requestDataNew->booking_id = $queryData['client_referance_number'];
+				$requestDataNew->reason_id = -1;
+				$requestDataNew->reason = "Vehical is not available";
+				if($getBearerToken = self::getBearerToken()) {
+					if($payload = self::Verify($getBearerToken, KEY)) {
+						if($payload['id'] == "]OwHd&I;@*fwkc/") {
+							$status = 1;
+							$msg = "Token validated";
+						} else {
+							$status = 0;
+							$msg = "Token validatation failed";
+						}
+					} else {
+						$status = 0;
+						$msg = "Missing payload";
+					}
+				} else {
+					$status = 0;
+					$msg = "Missing bearer token";
+				}
+			} else {
+				$status = 0;
+				$msg = "Invalid booking details";
+			}
+		} else {
+        	$status = 0;
+        	$msg = 'Method is not allowed';
+        }
+		return self::handleReturn($requestDataNew, $status, $msg);
+	}
+	public static function driverReassign($requestdata) {
+		global $CFG;
+		$requestDataNew = new stdClass();
+		if($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$bookingId = $requestdata->data->bookingId;
+			$driverName = $requestdata->data->driverName;
+			$driverMobile = $requestdata->data->driverMobile;
+			$plateNo = $requestdata->data->plateNo;
+			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number ='$bookingId'";
+			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
+				$original_param = json_decode($queryData['original_param']);
+				if($bookingId) {
+					$requestDataNew->event_name = "assigned";
+					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->seller_code = SELLER_CODE;
+					$requestDataNew->booking_id = $queryData['client_referance_number'];
+					$requestDataNew->supplier_id = SUPPLIER_ID;
+					$requestDataNew->driver_type = "oncall";
+					$requestDataNew->driver_name = $driverName;
+					$requestDataNew->driver_phone = $driverMobile;
+					$requestDataNew->driving_license = "N/A";
+					$requestDataNew->car_number = $plateNo;
+					$requestDataNew->model_id = $original_param->model_id;
+					$requestDataNew->car_model = "N/A";
+					$requestDataNew->car_fuel_type = "hybrid";
+					$requestDataNew->dispatch_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->car_changed = "no_change";
+					$requestDataNew->reassign = "yes";
+					$requestDataNew->reassign_reason_id = -1;
+					$requestDataNew->reassign_reason = "Vehical is not available";
+				}
+				if($getBearerToken = self::getBearerToken()) {
+					if($payload = self::Verify($getBearerToken, KEY)) {
+						if($payload['id'] == "]OwHd&I;@*fwkc/") {
+							$status = 1;
+							$msg = "Token validated";
+						} else {
+							$status = 0;
+							$msg = "Token validatation failed";
+						}
+					}else{
+						$status = 0;
+						$msg = "Missing payload";
+					}
+				}else{
+					$status = 0;
+					$msg = "Missing bearer token";
+				}
+			}else {
+				$status = 0;
+				$msg = "Invalid booking details";
+			}
+		} else {
+        	$status = 0;
+        	$msg = 'Method is not allowed';
+        }
+		return self::handleReturn($requestDataNew, $status, $msg);
+	}
+	public static function getAssignmentDetails($bookingId) {
+		global $CFG;
+		$checkQuery = "SELECT * FROM pushback_log WHERE ext_booking_number ='$bookingId' AND api_type='assigned'";
+		$result = mysqli_query($CFG, $checkQuery);
+		$queryData = mysqli_fetch_assoc($result);
+		$responsedata = $queryData['responsedata'];
+		$data = json_decode($responsedata, true);
+		$status = $data['status'];
+		if($status=="success") {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 }
