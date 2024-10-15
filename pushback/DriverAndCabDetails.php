@@ -34,7 +34,19 @@ if($DriverAndCabDetails['status']) {
     $inputString = trim($result);
     $inputString = $CFG->real_escape_string($inputString);
     if($reassignment){
-    orixPushback::InsertPushbackLog($bookingId, json_encode($callVoidDuty), $inputString, 'void_duty', json_encode($data));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, CURL_URL.'void_duty');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($callVoidDuty['data']));
+        $headers = array();
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'rqid: '.orixPushback::Rqid($callVoidDuty['data']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec($ch);
+        $inputString = trim($result);
+        $inputString = $CFG->real_escape_string($inputString);
+        orixPushback::InsertPushbackLog($bookingId, json_encode($callVoidDuty['data']), $inputString, 'void_duty', json_encode($data));
     }
     orixPushback::InsertPushbackLog($bookingId, json_encode($DriverAndCabDetails['data']), $inputString, 'assigned', json_encode($data));
     $result = json_decode($result);
