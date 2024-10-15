@@ -21,7 +21,9 @@ if($BookingInvoice['status']) {
     $headers[] = 'rqid: '.orixPushback::Rqid($BookingInvoice['data']);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     $result = curl_exec($ch);
-    orixPushback::InsertPushbackLog($bookingId, json_encode($BookingInvoice['data']), $result, 'generate_bill', json_encode($data));
+    $inputString = trim($result);
+    $inputString = $CFG->real_escape_string($inputString);
+    orixPushback::InsertPushbackLog($bookingId, json_encode($BookingInvoice['data']), $inputString, 'generate_bill', json_encode($data));
     $result = json_decode($result);
     if (curl_errno($ch)) {
         echo 'Error:' . curl_error($ch);

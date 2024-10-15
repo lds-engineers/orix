@@ -30,7 +30,9 @@ if($AcceptanceStatus['status']) {
     $headers[] = 'rqid: '.orixPushback::Rqid($AcceptanceStatus['data']);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     $result = curl_exec($ch);
-    orixPushback::InsertPushbackLog($bookingId, json_encode($AcceptanceStatus['data']), $result, 'booking_confirmation', json_encode($data));
+    $inputString = trim($result);
+    $inputString = $CFG->real_escape_string($inputString);
+    orixPushback::InsertPushbackLog($bookingId, json_encode($AcceptanceStatus['data']), $inputString, 'booking_confirmation', json_encode($data));
     $result = json_decode($result);
     if (curl_errno($ch)) {
         echo 'Error:' . curl_error($ch);

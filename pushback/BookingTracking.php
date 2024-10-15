@@ -21,7 +21,9 @@ if($BookingTracking['status']) {
     $headers[] = 'rqid: '.orixPushback::Rqid($BookingTracking['data']);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     $result = curl_exec($ch);
-    orixPushback::InsertPushbackLog($bookingId, json_encode($BookingTracking['data']), $result, 'driver_location', json_encode($data));
+    $inputString = trim($result);
+    $inputString = $CFG->real_escape_string($inputString);
+    orixPushback::InsertPushbackLog($bookingId, json_encode($BookingTracking['data']), $inputString, 'driver_location', json_encode($data));
     $result = json_decode($result);
     if (curl_errno($ch)) {
         echo 'Error:' . curl_error($ch);

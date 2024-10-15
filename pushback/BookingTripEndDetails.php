@@ -24,7 +24,9 @@ if($BookingTripEndDetails['status']) {
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
     $result = curl_exec($ch);
-    orixPushback::InsertPushbackLog($bookingId, json_encode($BookingTripEndDetails['data']), $result, 'end', json_encode($data));
+    $inputString = trim($result);
+    $inputString = $CFG->real_escape_string($inputString);
+    orixPushback::InsertPushbackLog($bookingId, json_encode($BookingTripEndDetails['data']), $inputString, 'end', json_encode($data));
     $result = json_decode($result);
     if (curl_errno($ch)) {
     echo 'Error:' . curl_error($ch);
