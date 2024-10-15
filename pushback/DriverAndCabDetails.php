@@ -7,9 +7,11 @@ $response = file_get_contents('php://input');
 $data = json_decode($response);
 $bookingId = $data->data->bookingId; 
 
+$reassignment = false;
 if(orixPushback::getAssignmentDetails($bookingId)) {
-    orixPushback::callVoidDuty($data);
+    $callVoidDuty = orixPushback::callVoidDuty($data);
     $DriverAndCabDetails = orixPushback::driverReassign($data);
+    $reassignment = true;
 } else {
     $DriverAndCabDetails = orixPushback::DriverAndCabDetails($data);
 }
@@ -31,6 +33,9 @@ if($DriverAndCabDetails['status']) {
     // print_r($DriverAndCabDetails['data']);
     $inputString = trim($result);
     $inputString = $CFG->real_escape_string($inputString);
+    if($reassignment){
+    orixPushback::InsertPushbackLog($bookingId, json_encode($callVoidDuty), $inputString, 'void_duty', json_encode($data));
+    }
     orixPushback::InsertPushbackLog($bookingId, json_encode($DriverAndCabDetails['data']), $inputString, 'assigned', json_encode($data));
     $result = json_decode($result);
     if (curl_errno($ch)) {
