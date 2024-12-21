@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "58d2cbda-3da0-4025-a36f-6cbfeb84c6e1",
+		"name": "orix-pushback-live",
+		"description": "1. Accept/Reject API.\n    \n2. Cab and Driver.\n    \n3. Trip start and end.\n    \n4. Tracking.\n    \n5. Invoice.\n    \n6. Auth\n    \n7. Close duty (inter-linked)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28249309",
+		"_collection_link": "https://universal-zodiac-10330.postman.co/workspace/Orix~306b0f99-747f-4bfc-a93d-116fb03be338/collection/28249309-58d2cbda-3da0-4025-a36f-6cbfeb84c6e1?action=share&source=collection_link&creator=28249309"
+	},
+	"item": [
+		{
+			"name": "token genearate",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{Password}}",
+						"username": "{{Username}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": "{{base_url_prod}}/orix/pushback/token.php"
+			},
+			"response": []
+		},
+		{
+			"name": "AcceptanceStatus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGdvIjoiSFMyNTYiLCJ0eXBlIjoiSldUIiwiZXhwaXJlIjoxNzMyMjY1OTc2fQ==.eyJpZCI6Il1Pd0hkJkk7QCpmd2tjXC8iLCJ0aW1lIjoxNzMyMjYyMzc2fQ==.YjhiNjhmODNkZGQ0YWJkOTRiYjJmNDVlY2JmNjUyOWQzYWZiMzcwNzdmNmE4MmE5NTgzZmI4YTE5ODgxMjUzYQ=="
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url_prod}}/orix/pushback/AcceptanceStatus.php?client=testclient&serviceProviderResponse=ACCEPT&bookingId=DR/DEL/24-25/26000492",
+					"host": [
+						"{{base_url_prod}}"
+					],
+					"path": [
+						"orix",
+						"pushback",
+						"AcceptanceStatus.php"
+					],
+					"query": [
+						{
+							"key": "client",
+							"value": "testclient"
+						},
+						{
+							"key": "serviceProviderResponse",
+							"value": "ACCEPT"
+						},
+						{
+							"key": "bookingId",
+							"value": "DR/DEL/24-25/26000492"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "AcceptanceStatus",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"required_param_myf\": {\r\n        \"event_name\": \"booking_confirmation\",\r\n        \"event_datetime\": \"no_data\",\r\n        \"seller_code\": \"se274\",\r\n        \"ext_booking_number\": \"DR/DEL/24-25/26000272\",\r\n        \"accept\": \"yes\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": ""
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "DriverAndCabDetails",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGdvIjoiSFMyNTYiLCJ0eXBlIjoiSldUIiwiZXhwaXJlIjoxNzMyMjY1OTc2fQ==.eyJpZCI6Il1Pd0hkJkk7QCpmd2tjXC8iLCJ0aW1lIjoxNzMyMjYyMzc2fQ==.YjhiNjhmODNkZGQ0YWJkOTRiYjJmNDVlY2JmNjUyOWQzYWZiMzcwNzdmNmE4MmE5NTgzZmI4YTE5ODgxMjUzYQ=="
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {\r\n        \"bookingId\": \"DR/DEL/24-25/26000432\",\r\n        \"driverName\": \"Neel3\",\r\n        \"driverMobile\": \"8974705411\",\r\n        \"plateNo\": \"DEL/2024/10/15\",\r\n        \"client\": \"lds\"\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/pushback/DriverAndCabDetails.php"
+			},
+			"response": [
+				{
+					"name": "DriverAndCabDetails",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"required_param_myf\": {\r\n        \"event_name\": \"assigned\",\r\n        \"event_datetime\": \"\",\r\n        \"seller_code\": \"se274\",\r\n        \"booking_id\": \"DR/DEL/24-25/26000272\",\r\n        \"supplier_id\": \"no_data\",\r\n        \"driver_type\": \"no_data\",\r\n        \"driver_name\": \"Testing\",\r\n        \"driver_phone\": \"1234567890\",\r\n        \"driving_license\": \"no_data\",\r\n        \"car_number\": \"no_data\",\r\n        \"model_id\": \"0\",\r\n        \"car_model\": \"no_data\",\r\n        \"car_fuel_type\": \"no_data\",\r\n        \"dispatch_datetime\": \"no_data\",\r\n        \"car_changed\": \"no_change\",\r\n        \"reassign\": \"no\",\r\n        \"reassign_reason_id\": \"no_data\",\r\n        \"reassign_reason\": \"no_data\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": ""
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "BookingTripStartDetails",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGdvIjoiSFMyNTYiLCJ0eXBlIjoiSldUIiwiZXhwaXJlIjoxNzMyMjY1OTc2fQ==.eyJpZCI6Il1Pd0hkJkk7QCpmd2tjXC8iLCJ0aW1lIjoxNzMyMjYyMzc2fQ==.YjhiNjhmODNkZGQ0YWJkOTRiYjJmNDVlY2JmNjUyOWQzYWZiMzcwNzdmNmE4MmE5NTgzZmI4YTE5ODgxMjUzYQ=="
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {\r\n        \"bookingId\": \"DR/DEL/24-25/26000471\",\r\n        \"currentLat\": 28.6602919,\r\n        \"currentLng\": 77.1507474,\r\n        \"eventName\": \"StartTrip\",\r\n        \"eventDatetime\": \"1731379689000\",\r\n        \"client\": \"testclient\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/pushback/BookingTripStartDetails.php"
+			},
+			"response": [
+				{
+					"name": "BookingTripStartDetails",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"required_param_myf\": {\r\n        \"event_name\": \"start\",\r\n        \"event_datetime\": \"no_data\",\r\n        \"seller_code\": \"se274\",\r\n        \"booking_id\": \"DR/DEL/24-25/26000272\",\r\n        \"garage_pickup_distance\": \"no_data\",\r\n        \"garage_pickup_time\": \"no_data\",\r\n        \"current_address\": \"no_data\",\r\n        \"current_lat\": \"28.6795683\",\r\n        \"current_lng\": \"77.1653517\",\r\n        \"meter_reading\": \"no_data\",\r\n        \"passcode\": \"552984\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": ""
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "BookingTripEndDetails",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGdvIjoiSFMyNTYiLCJ0eXBlIjoiSldUIiwiZXhwaXJlIjoxNzMyMjY1OTc2fQ==.eyJpZCI6Il1Pd0hkJkk7QCpmd2tjXC8iLCJ0aW1lIjoxNzMyMjYyMzc2fQ==.YjhiNjhmODNkZGQ0YWJkOTRiYjJmNDVlY2JmNjUyOWQzYWZiMzcwNzdmNmE4MmE5NTgzZmI4YTE5ODgxMjUzYQ=="
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": {\r\n    \"bookingId\": \"DR/DEL/24-25/26000471\",\r\n    \"currentLat\": 28.6602607,\r\n    \"currentLng\": 77.1506934,\r\n    \"eventName\": \"EndTrip\",\r\n    \"eventDatetime\": \"1731382017000\",\r\n    \"client\": \"testclient\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/pushback/BookingTripEndDetails.php"
+			},
+			"response": [
+				{
+					"name": "BookingTripEndDetails",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"required_param_myf\": {\r\n        \"event_name\": \"end\",\r\n        \"event_datetime\": 1689934338,\r\n        \"seller_code\": \"se274\",\r\n        \"booking_id\": \"DR/DEL/24-25/26000267\",\r\n        \"current_address\": \"no_data\",\r\n        \"current_lat\": \"28.6795683\",\r\n        \"current_lng\": \"77.1653517\",\r\n        \"meter_reading\": \"no_data\",\r\n        \"drop_garage_distance\": \"no_data\",\r\n        \"drop_garage_time\": \"no_data\",\r\n        \"waiting_time\": \"no_data\",\r\n        \"pickup_drop_distance\": \"no_data\",\r\n        \"passcode\": \"577384\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": ""
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "BookingTracking",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGdvIjoiSFMyNTYiLCJ0eXBlIjoiSldUIiwiZXhwaXJlIjoxNzMyMjY1OTc2fQ==.eyJpZCI6Il1Pd0hkJkk7QCpmd2tjXC8iLCJ0aW1lIjoxNzMyMjYyMzc2fQ==.YjhiNjhmODNkZGQ0YWJkOTRiYjJmNDVlY2JmNjUyOWQzYWZiMzcwNzdmNmE4MmE5NTgzZmI4YTE5ODgxMjUzYQ=="
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {\r\n        \"bookingId\": \"DR/DEL/24-25/26000492\",\r\n        \"gpsTime\": \"2024-10-15 21:31:00\",\r\n        \"lat\": 28.66053581237793,\r\n        \"lng\": 77.1508560180664,\r\n        \"dutyStatus\": \"dispatch\",\r\n        \"client\": \"lds\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/pushback/BookingTracking.php"
+			},
+			"response": [
+				{
+					"name": "BookingTracking",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"required_param_myf\": {\r\n        \"event_name\": \"driver_location\",\r\n        \"event_datetime\": \"\",\r\n        \"seller_code\": \"se274\",\r\n        \"booking_id\": \"DR/DEL/24-25/26000272\",\r\n        \"locations\": [\r\n            {\r\n                \"current_trip_status\": \"pickup\",\r\n                \"lat\": \"28.6795266\",\r\n                \"lng\": \"77.1657028\",\r\n                \"time\": \"no_data\",\r\n                \"gps_time\": \"2023-07-18 17:37:32\",\r\n                \"location_accuracy\": \"no_data\",\r\n                \"speed\": \"no_data\",\r\n                \"provider\": \"no_data\",\r\n                \"bearing\": \"no_data\",\r\n                \"altitude\": \"no_data\"\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": ""
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "BookingInvoice",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGdvIjoiSFMyNTYiLCJ0eXBlIjoiSldUIiwiZXhwaXJlIjoxNzMyMjY1OTc2fQ==.eyJpZCI6Il1Pd0hkJkk7QCpmd2tjXC8iLCJ0aW1lIjoxNzMyMjYyMzc2fQ==.YjhiNjhmODNkZGQ0YWJkOTRiYjJmNDVlY2JmNjUyOWQzYWZiMzcwNzdmNmE4MmE5NTgzZmI4YTE5ODgxMjUzYQ=="
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {\r\n        \"amountBreakup\": {\r\n            \"parkingCharge\": 1.00,\r\n            \"basePrice\": 1825.00,\r\n            \"extraHrPrice\": 2.0000,\r\n            \"serviceTax\": 3.0,\r\n            \"chauƯeurCharge\": 4.00,\r\n            \"nightStayAllowance\": 5.00,\r\n            \"tollCharge\": 6.00,\r\n            \"extraKmPrice\": 825.00,\r\n            \"traveledKm\": 400.11,\r\n            \"garageKmPrice\": 23.04,\r\n            \"garageHrPrice\": 5.00,\r\n            \"cancellationCharge\": 0.0,\r\n            \"penaltyCharge\": 10.00,\r\n            \"otherChanges\": 0.0,\r\n            \"gstRate\": 12\r\n        },\r\n        \"tripMetrics\": {\r\n            \"startKm\": 100.11,\r\n            \"endKm\": 500.22,\r\n            \"totalKm\": 208.7,\r\n            \"tripKm\": 98.88,\r\n            \"garageKm\": 32.00,\r\n            \"extraKm\": 12.09,\r\n            \"totalHr\": \"01: 05: 36\",\r\n            \"tripHr\": \"01: 07: 26\",\r\n            \"garageHr\": \"00: 30: 00\",\r\n            \"extraHr\": \"00: 54: 00\"\r\n        },\r\n        \"bookingId\": \"DR/DEL/24-25/26000428\",\r\n        \"client\": \"test1\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/pushback/BookingInvoice.php"
+			},
+			"response": [
+				{
+					"name": "BookingInvoice",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"required_param_myf\": {\r\n        \"event_name\": \"generate_invoice\",\r\n        \"event_datetime\": \"no_data\",\r\n        \"seller_code\": \"se274\",\r\n        \"booking_id\": \"DR/DEL/24-25/26000272\",\r\n        \"ext_bill_number\": \"no_data\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": ""
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	]
+}

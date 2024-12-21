@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "3d98d955-6666-47b6-9117-8cc8469ced2e",
+		"name": "orix-live",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28249309",
+		"_collection_link": "https://universal-zodiac-10330.postman.co/workspace/Orix~306b0f99-747f-4bfc-a93d-116fb03be338/collection/28249309-3d98d955-6666-47b6-9117-8cc8469ced2e?action=share&source=collection_link&creator=28249309"
+	},
+	"item": [
+		{
+			"name": "create-lds",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZGV2LVRlc3QxOmRoZWVyYWpAMTIzNA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"event_name\": \"booking_creation\",\r\n    \"booking_ref_number\": \"7128\",\r\n    \"cost_center_number\": \"\",\r\n    \"trn\": \"BPM2Y\",\r\n    \"traveler_type\": \"corporate\",\r\n    \"service_type\": \"local-package\",\r\n    \"city_id\": \"281\",\r\n    \"model_id\": \"0\",\r\n    \"no_of_days\": \"1\",\r\n    \"pickup_datetime\": \"2024-12-04 21:00:00\",\r\n    \"pickup_area\": \"Pune, Maharashtra, India\",\r\n    \"pickup_address\": \"test booking \",\r\n    \"pickup_area_latitude\": \"18.5204303\",\r\n    \"pickup_area_longitude\": \"73.8567437\",\r\n    \"drop_area\": \"\",\r\n    \"drop_address\": \"test booking \",\r\n    \"drop_area_latitude\": \"\",\r\n    \"drop_area_longitude\": \"\",\r\n    \"traveler_name\": \"faiz test\",\r\n    \"traveler_email_id\": \"myf222@gmail.com\",\r\n    \"traveler_mobile_no\": \"7290044533\",\r\n    \"category_id\": \"3139\",\r\n    \"dispatch_instruction\": \"test booking \",\r\n    \"included_time\": 28800,\r\n    \"included_distance\": 80000,\r\n    \"airport_id\": \"\",\r\n    \"trip_type\": \"\",\r\n    \"corporate_code\": \"C103935\",\r\n    \"destination_city_id\": \"\",\r\n    \"start_trip_passcode\": \"\",\r\n    \"end_trip_passcode\": \"\",\r\n    \"flight_number\": \"\",\r\n    \"escort_service\": \"no\",\r\n    \"booking_customer_type\": \"normal\",\r\n    \"telephone_pin\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/"
+			},
+			"response": []
+		},
+		{
+			"name": "booking-modify-lds",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZGV2LVRlc3QxOmRoZWVyYWpAMTIzNA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"event_name\": \"booking_modify\",\r\n    \"booking_ref_number\": \"88889\",\r\n    \"traveler_type\": \"corporate\",\r\n    \"corporate_code\": \"C024726\",\r\n    \"traveler_name\": \"Nitin Jains\",\r\n    \"traveler_email_id\": \"suneet@lds-international.in\",\r\n    \"traveler_mobile_no\": \"9999999999\",\r\n    \"service_type\": \"local-package\",\r\n    \"category_id\": \"0\",\r\n    \"model_id\": \"0\",\r\n    \"city_id\": \"2\",\r\n    \"destination_city_id\": \"\",\r\n    \"trip_type\": \"one_way\",\r\n    \"no_of_days\": \"1\",\r\n    \"airport_id\": \"0\",\r\n    \"included_distance\": \"40000\",\r\n    \"included_time\": \"14400\",\r\n    \"pickup_datetime\": \"2024-11-22 10:35:00\",\r\n    \"pickup_area\": \"New Delhi Railway Station,Ajmeri Gate, Delhi\",\r\n    \"pickup_area_latitude\": \"28.6418048\",\r\n    \"pickup_area_longitude\": \"77.2217462\",\r\n    \"pickup_address\": \"New Delhi\",\r\n    \"drop_area\": \"Gurugram Bus Stand, AdarshNagar, Sector 12, Gurugram, Haryana\",\r\n    \"drop_address\": \"Gurugram\",\r\n    \"drop_area_latitude\": \"28.4653127\",\r\n    \"drop_area_longitude\": \"77.0321871\",\r\n    \"start_trip_passcode\": \"552984\",\r\n    \"end_trip_passcode\": \"577384\",\r\n    \"dispatch_instruction\": \"Need neat and clean car\",\r\n    \"flight_number\": \"\",\r\n    \"booking_customer_type\": \"vip\",\r\n    \"escort_service\": \"\",\r\n    \"cost_center_number\": \"\",\r\n    \"telephone_pin\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/"
+			},
+			"response": []
+		},
+		{
+			"name": "booking-cancel-lds",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZGV2LVRlc3QxOmRoZWVyYWpAMTIzNA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"event_name\": \"cancel_booking\",\r\n  \"booking_ref_number\": \"88889\",\r\n  \"cancellation_fee\": \"0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/"
+			},
+			"response": []
+		},
+		{
+			"name": "mis-booking-lds",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZGV2LVRlc3QxOmRoZWVyYWpAMTIzNA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"event_time\": \"2024-08-26 11:29:20\",\r\n    \"event_name\": \"mis\",\r\n    \"external_booking_id\": \"\",\r\n    \"booking_ref_number\": \"130916-ABC47\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url_prod}}/orix/"
+			},
+			"response": []
+		}
+	]
+}
