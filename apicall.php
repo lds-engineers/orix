@@ -131,14 +131,14 @@ class orixapi{
 		$params->engagement_code="Test";
 		// $params->corporate_code="C024726";
 		$params->corporate_code="C033831";
-		$selercode='se274';
-		// $selercode='se1009';
+		// $selercode='se274';
+		$selercode='se1009';
 		//json_encode($params);
 		// print_r($params);
 
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
-		  CURLOPT_URL => 'https://reservecaruat.orixindia.com:8081/myf/seller/'.$selercode.'/booking/create',
+		  CURLOPT_URL => 'https://cabmanapi.orixindia.com:52816/myf/seller/'.$selercode.'/booking/create',
 		  CURLOPT_RETURNTRANSFER => true,
 		  CURLOPT_ENCODING => '',
 		  CURLOPT_MAXREDIRS => 10,
@@ -307,13 +307,13 @@ class orixapi{
 		$params->booking_customer_type= $getpatameter['booking_customer_type'];
 		$params->category_id=$packagecategory;
 		$params->corporate_code="C033831";
-		$selercode='se274';
+		$selercode='se1009';
 		// print_r($params);
 		// die;
 
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
-		  CURLOPT_URL => 'https://reservecaruat.orixindia.com:8081/myf/seller/'.$selercode.'/booking/modify',
+		  CURLOPT_URL => 'https://cabmanapi.orixindia.com:52816/myf/seller/'.$selercode.'/booking/modify',
 		  CURLOPT_RETURNTRANSFER => true,
 		  CURLOPT_ENCODING => '',
 		  CURLOPT_MAXREDIRS => 10,
@@ -410,12 +410,12 @@ class orixapi{
 		}else{
 			$params->cancellation_fee= "0";
 		}
-		$selercode='se274';
+		$selercode='se1009';
 
 
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
-		  CURLOPT_URL => 'https://reservecaruat.orixindia.com:8081/myf/seller/'.$selercode.'/booking/cancel',
+		  CURLOPT_URL => 'https://cabmanapi.orixindia.com:52816/myf/seller/'.$selercode.'/booking/cancel',
 		  CURLOPT_RETURNTRANSFER => true,
 		  CURLOPT_ENCODING => '',
 		  CURLOPT_MAXREDIRS => 10,
@@ -512,12 +512,12 @@ class orixapi{
 			$params->external_booking_id="";
 		}
 		$params->event_time=$getpatameter['event_time'];
-		$selercode='se274';
+		$selercode='se1009';
 
 
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
-		  CURLOPT_URL => 'https://reservecaruat.orixindia.com:8081/myf/seller/'.$selercode.'/booking/booking/mis',
+		  CURLOPT_URL => 'https://cabmanapi.orixindia.com:52816/myf/seller/'.$selercode.'/booking/booking/mis',
 		  CURLOPT_RETURNTRANSFER => true,
 		  CURLOPT_ENCODING => '',
 		  CURLOPT_MAXREDIRS => 10,
@@ -699,7 +699,7 @@ class orixapi{
 			// 	$errres->status = "error";
 			// 	$errres->requestTime=date("d m Y h:i:s A");
 			// 	$errres->message = "Please provide seller code";
-			// } else if($getpatameter['seller_code'] != "se274"){
+			// } else if($getpatameter['seller_code'] != "se1009"){
 			// 	$errres->errorcode = "1208";
 			// 	$errres->status = "error";
 			// 	$errres->requestTime=date("d m Y h:i:s A");

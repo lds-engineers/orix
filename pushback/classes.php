@@ -52,7 +52,7 @@ class orixPushback {
 	        if($_SERVER['PHP_AUTH_USER'] == USER) {
 	        	if($_SERVER['PHP_AUTH_PW'] == SECRET) {
 	        		$token = $headers_encoded . '.' . $payload_encoded .'.'. $signature_encoded;
-			        $expire_at = date("Y-m-d h:i:s",$headers['expire']);
+			        $expire_at = date("Y-m-d H:i:s",$headers['expire']);
 			        if($token) {
 			        	$status = 1;
 			        	$msg = 'Token generated';
@@ -135,14 +135,14 @@ class orixPushback {
 				
 				if($requestdata->serviceProviderResponse == 'ACCEPT') {
 					$requestDataNew->event_name = "booking_confirmation";
-					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->seller_code = SELLER_CODE;
 					$requestDataNew->booking_id = $queryData['client_referance_number'];
 					$requestDataNew->ext_booking_number = $bookingId;
 					$requestDataNew->accept = "yes";
 				}elseif($requestdata->serviceProviderResponse == 'DENY') {
 					$requestDataNew->event_name = "booking_confirmation";
-					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->seller_code = SELLER_CODE;
 					$requestDataNew->booking_id = $queryData['client_referance_number'];
 					$requestDataNew->ext_booking_number = $bookingId;
@@ -191,7 +191,7 @@ class orixPushback {
 				$original_param = json_decode($queryData['original_param']);
 				if($bookingId) {
 					$requestDataNew->event_name = "assigned";
-					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->seller_code = SELLER_CODE;
 					$requestDataNew->booking_id = $queryData['client_referance_number'];
 					$requestDataNew->supplier_id = SUPPLIER_ID;
@@ -203,7 +203,7 @@ class orixPushback {
 					$requestDataNew->model_id = $original_param->model_id;
 					$requestDataNew->car_model = "N/A";
 					$requestDataNew->car_fuel_type = "hybrid";
-					$requestDataNew->dispatch_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->dispatch_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->car_changed = "no_change";
 					$requestDataNew->reassign = "no";
 					$requestDataNew->reassign_reason_id = "N/A";
@@ -244,13 +244,18 @@ class orixPushback {
 			$dutyStatus = $requestdata->data->dutyStatus;
 			$lat = $requestdata->data->lat;
 			$lng = $requestdata->data->lng;
-			$gpsTime = $requestdata->data->gpsTime;
+
+			$gmtDatetime = $requestdata->data->gpsTime;
+			$date = new DateTime($gmtDatetime, new DateTimeZone('GMT'));
+			$date->setTimezone(new DateTimeZone('Asia/Kolkata'));
+			$gpsTime =  $date->format('Y-m-d H:i:s');
+
 			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number ='$bookingId'";
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
 				if($bookingId) {
 					$requestDataNew->event_name = "dispatch";
-					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->seller_code = SELLER_CODE;
 					$requestDataNew->booking_id = $queryData['client_referance_number'];
 					$requestDataNew->auto_driver_confirm = 1;
@@ -295,13 +300,18 @@ class orixPushback {
 			$dutyStatus = $requestdata->data->dutyStatus;
 			$lat = $requestdata->data->lat;
 			$lng = $requestdata->data->lng;
-			$gpsTime = $requestdata->data->gpsTime;
+
+			$gmtDatetime = $requestdata->data->gpsTime;
+			$date = new DateTime($gmtDatetime, new DateTimeZone('GMT'));
+			$date->setTimezone(new DateTimeZone('Asia/Kolkata'));
+			$gpsTime =  $date->format('Y-m-d H:i:s');
+			
 			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number ='$bookingId'";
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
 				if($bookingId) {
 					$requestDataNew->event_name = "arrived";
-					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->seller_code = SELLER_CODE;
 					$requestDataNew->booking_id = $queryData['client_referance_number'];
 					$requestDataNew->current_address = "N/A";
@@ -342,12 +352,18 @@ class orixPushback {
 			$bookingId = $requestdata->data->bookingId;
 			$currentLat = $requestdata->data->currentLat;
 			$currentLng = $requestdata->data->currentLng;
-			$eventDatetime = (int)($requestdata->data->eventDatetime)/1000;
+			$eventDatetime = ((int)($requestdata->data->eventDatetime)/1000)+19800;
+
+			$date = new DateTime();
+			$date->setTimestamp($eventDatetime);
+			$date->setTimezone(new DateTimeZone('Asia/Kolkata'));
+			$eventDatetime = $date->format('Y-m-d H:i:s');
+
 			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number = '$bookingId'";
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
 				$requestDataNew->event_name = 'start';
-				$requestDataNew->event_datetime = date("Y-m-d h:i:s", $eventDatetime);
+				$requestDataNew->event_datetime = $eventDatetime;
 				$requestDataNew->seller_code = SELLER_CODE;
 				$requestDataNew->booking_id = $queryData['client_referance_number'];
 				$requestDataNew->garage_pickup_distance = 0;
@@ -391,12 +407,19 @@ class orixPushback {
 			$bookingId = $requestdata->data->bookingId;
 			$currentLat = $requestdata->data->currentLat;
 			$currentLng = $requestdata->data->currentLng;
-			$eventDatetime = (int)($requestdata->data->eventDatetime)/1000;
+			$eventDatetime = ((int)($requestdata->data->eventDatetime)/1000)+19800;
+
+			$date = new DateTime();
+			$date->setTimestamp($eventDatetime);
+			$date->setTimezone(new DateTimeZone('Asia/Kolkata'));
+			$eventDatetime = $date->format('Y-m-d H:i:s');
+
+
 			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number = '$bookingId'";
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
 				$requestDataNew->event_name = 'end';
-				$requestDataNew->event_datetime = date("Y-m-d h:i:s", $eventDatetime);
+				$requestDataNew->event_datetime = $eventDatetime;
 				$requestDataNew->seller_code = SELLER_CODE;
 				$requestDataNew->booking_id = $queryData['client_referance_number'];
 				$requestDataNew->current_address = "N/A";
@@ -442,27 +465,33 @@ class orixPushback {
 			$bookingId = $requestdata->data->bookingId;
 			$currentLat = $requestdata->data->currentLat;
 			$currentLng = $requestdata->data->currentLng;
-			$eventDatetime = (int)($requestdata->data->eventDatetime);
+			$eventDatetime = $eventDatetime = ((int)($requestdata->data->eventDatetime)/1000)+19800;
+
+			$date = new DateTime();
+			$date->setTimestamp($eventDatetime);
+			$date->setTimezone(new DateTimeZone('Asia/Kolkata'));
+			$eventDatetime = $date->format('Y-m-d H:i:s');
+
 			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number = '$bookingId'";
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
 				$client_referance_number = $queryData['client_referance_number'];
 				$requestDataNew->event_name = 'closed';
-				$requestDataNew->event_datetime = date("Y-m-d h:i:s", $eventDatetime);
+				$requestDataNew->event_datetime = $eventDatetime;
 				$requestDataNew->seller_code = SELLER_CODE;
 				$requestDataNew->booking_id = $client_referance_number;
 				$queryChk = "SELECT * FROM booking_tracking WHERE ext_booking_number = '$bookingId' AND client_referance_number = '$client_referance_number'";
 				$actual_pickup_lat = "28.6795683";
 				$actual_pickup_long = "77.1653517";
 				$actual_pickup_address = "N/A";
-				$pickup_time = date("Y-m-d h:i:s", time());
+				$pickup_time = date("Y-m-d H:i:s", time());
 				$actual_drop_address = "N/A";
 				$actual_drop_lat = "28.6795683";
 				$actual_drop_long = "77.1653517";
-				$drop_time = date("Y-m-d h:i:s", time());
+				$drop_time = date("Y-m-d H:i:s", time());
 				$dispatch_center_lng = "77.1653517";
 				$dispatch_center_lat = "28.6795683";
-				$arrived_time = date("Y-m-d h:i:s", time());
+				$arrived_time = date("Y-m-d H:i:s", time());
 				$pickup_drop_distance = "2000";
 				$garage_pickup_distance = "4000";
 				$drop_garage_distance = "3000";
@@ -562,7 +591,12 @@ class orixPushback {
 			$dutyStatus = $requestdata->data->dutyStatus;
 			$lat = $requestdata->data->lat;
 			$lng = $requestdata->data->lng;
-			$gpsTime = $requestdata->data->gpsTime;
+			
+			$gmtDatetime = $requestdata->data->gpsTime;
+			$date = new DateTime($gmtDatetime, new DateTimeZone('GMT'));
+			$date->setTimezone(new DateTimeZone('Asia/Kolkata'));
+			$gpsTime =  $date->format('Y-m-d H:i:s');
+			
 			$query = "SELECT `original_param`, `ext_booking_number`, `client_referance_number` FROM booking_creation WHERE ext_booking_number = '$bookingId'";
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
@@ -584,7 +618,7 @@ class orixPushback {
 				}
 				if($pickup) {  
 					$requestDataNew->event_name = "driver_location";
-					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->seller_code = SELLER_CODE;
 					$requestDataNew->booking_id = $client_referance_number;
 					$requestDataNew->locations = array(
@@ -592,7 +626,7 @@ class orixPushback {
 							"current_trip_status"=>$dutyStatus,
 							"lat"=>$lat,
 							"lng"=>$lng,
-							"time"=>date("Y-m-d h:i:s",time()),
+							"time"=>date("Y-m-d H:i:s",time()),
 							"gps_time"=>$gpsTime,
 							"location_accuracy"=>"",
 							"speed"=>"",
@@ -604,7 +638,7 @@ class orixPushback {
 				} else {
 					if(mysqli_query($CFG, $queryInsert)) {  
 						$requestDataNew->event_name = "driver_location";
-						$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+						$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 						$requestDataNew->seller_code = SELLER_CODE;
 						$requestDataNew->booking_id = $client_referance_number;
 						$requestDataNew->locations = array(
@@ -612,7 +646,7 @@ class orixPushback {
 								"current_trip_status"=>$dutyStatus,
 								"lat"=>$lat,
 								"lng"=>$lng,
-								"time"=>date("Y-m-d h:i:s",time()),
+								"time"=>date("Y-m-d H:i:s",time()),
 								"gps_time"=>$gpsTime,
 								"location_accuracy"=>"",
 								"speed"=>"",
@@ -659,7 +693,7 @@ class orixPushback {
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
 				$requestDataNew->event_name = "generate_bill";
-				$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+				$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 				$requestDataNew->seller_code = SELLER_CODE;
 				$client_referance_number = $queryData['client_referance_number'];
 				$requestDataNew->booking_id = $client_referance_number;
@@ -757,7 +791,7 @@ class orixPushback {
 		$return = [
 			 "status"=>$status,
 			 "msg"=>$msg,
-			 "requestTime"=>date("Y-m-d h:i:s"),
+			 "requestTime"=>date("Y-m-d H:i:s"),
 			 "data"=>$data
 		];
 		return $return;
@@ -781,7 +815,7 @@ class orixPushback {
 			if($queryData = mysqli_fetch_assoc(mysqli_query($CFG, $query))) {
 				$original_param = json_decode($queryData['original_param']);
 				$requestDataNew->event_name = 'void_duty';
-				$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+				$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 				$requestDataNew->seller_code = SELLER_CODE;
 				$requestDataNew->booking_id = $queryData['client_referance_number'];
 				$requestDataNew->reason_id = -1;
@@ -826,7 +860,7 @@ class orixPushback {
 				$original_param = json_decode($queryData['original_param']);
 				if($bookingId) {
 					$requestDataNew->event_name = "assigned";
-					$requestDataNew->event_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->event_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->seller_code = SELLER_CODE;
 					$requestDataNew->booking_id = $queryData['client_referance_number'];
 					$requestDataNew->supplier_id = SUPPLIER_ID;
@@ -838,7 +872,7 @@ class orixPushback {
 					$requestDataNew->model_id = $original_param->model_id;
 					$requestDataNew->car_model = "N/A";
 					$requestDataNew->car_fuel_type = "hybrid";
-					$requestDataNew->dispatch_datetime = date("Y-m-d h:i:s",time());
+					$requestDataNew->dispatch_datetime = date("Y-m-d H:i:s",time());
 					$requestDataNew->car_changed = "no_change";
 					$requestDataNew->reassign = "yes";
 					$requestDataNew->reassign_reason_id = -1;
